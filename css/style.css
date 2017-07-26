@@ -9,6 +9,11 @@ input {
     width: 316px;
     height: 40px;
     display: block;
+    border-radius: 6px;
+    margin: 2px;
+    font-family: 'Lora', serif;
+    font-size: 25px;
+    background-color: bisque;
 }
 
 button {
@@ -33,7 +38,7 @@ button {
     /*vertical-align: middle;*/
 }
 #buttonField {
-    width: 321px;
+    width: 320px;
     height: auto;
     margin: 100px 60% ;
 }
@@ -41,8 +46,10 @@ button {
 button:hover {
     background-color: lightpink; /* Green */
     color: white;
+    border-radius: 6px;
 }
 
-.button-clear {
+button.symbols {
     background: url(https://s-media-cache-ak0.pinimg.com/736x/82/6d/35/826d35bece905a71528eb0329668d07c--cross-clipart-thanksgiving-crafts.jpg) no-repeat;
 }
+
