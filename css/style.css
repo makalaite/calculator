@@ -1,0 +1,48 @@
+body {
+    background: url(http://pixelperc.com/wp-content/uploads/2017/02/hd-animals-wallpapers-group-95-with-regard-to-brilliant-animals-hd-wallpapers-download-intended-for-motivate-inviting.jpg) no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Lora', serif;
+    font-size: 25px;
+}
+
+input {
+    width: 316px;
+    height: 40px;
+    display: block;
+}
+
+button {
+    background: url(http://images.clipartpanda.com/nut-clipart-cliparti1_nut-clip-art_10.jpg) no-repeat;
+    background-size: cover;
+    cursor:pointer;
+    border: none;
+    /*background-color: burlywood;*/
+    opacity: 0.9;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    height: 65px;
+    width: 80px;
+    font-family: 'Lora', serif;
+    font-size: 30px;
+    color: aquamarine;
+    text-align: left;
+    display: inline-block;
+
+    /*float: none;*/
+    /*display: table-cell;*/
+    /*vertical-align: middle;*/
+}
+#buttonField {
+    width: 321px;
+    height: auto;
+    margin: 100px 60% ;
+}
+
+button:hover {
+    background-color: lightpink; /* Green */
+    color: white;
+}
+
+.button-clear {
+    background: url(https://s-media-cache-ak0.pinimg.com/736x/82/6d/35/826d35bece905a71528eb0329668d07c--cross-clipart-thanksgiving-crafts.jpg) no-repeat;
+}
