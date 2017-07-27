@@ -21,7 +21,6 @@ button {
     background-size: cover;
     cursor:pointer;
     border: none;
-    /*background-color: burlywood;*/
     opacity: 0.9;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
@@ -48,8 +47,8 @@ button:hover {
     color: white;
     border-radius: 6px;
 }
-
-button.symbols {
+.symbols {
     background: url(https://s-media-cache-ak0.pinimg.com/736x/82/6d/35/826d35bece905a71528eb0329668d07c--cross-clipart-thanksgiving-crafts.jpg) no-repeat;
+    background-size: contain;
 }
 
