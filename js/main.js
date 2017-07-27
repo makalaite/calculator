@@ -4,33 +4,33 @@
 
 let buttons = [
 
-    {type: 'function', value: 'CE', class: 'symbols'},
-    {type: 'button', value: 'C', class: 'symbols'},
-    {type: 'function', value: '+-', class: 'symbols'},
-    {type: 'function', value: '%', class: 'symbols'},
+    {type: 'action', value: 'CE', cssClass: 'symbols'},
+    {type: 'action', value: 'C', cssClass: 'symbols'},
+    {type: 'action', value: '+-', cssClass: 'symbols'},
+    {type: 'action', value: '%', cssClass: 'symbols'},
 
 
-    {type: 'button', value: 7, class: 'numbers'},
-    {type: 'button', value: 8, class: 'numbers'},
-    {type: 'button', value: 9, class: 'numbers'},
-    {type: 'function', value: '/', class: 'symbols'},
+    {type: 'number', value: 7, cssClass: 'numbers'},
+    {type: 'number', value: 8, cssClass: 'numbers'},
+    {type: 'number', value: 9, cssClass: 'numbers'},
+    {type: 'action', value: '/', cssClass: 'symbols'},
 
 
-    {type: 'button', value: 4, class: 'numbers'},
-    {type: 'button', value: 5, class: 'numbers'},
-    {type: 'button', value: 6, class: 'numbers'},
-    {type: 'function', value: '*', class: 'symbols'},
+    {type: 'number', value: 4, cssClass: 'numbers'},
+    {type: 'number', value: 5, cssClass: 'numbers'},
+    {type: 'number', value: 6, cssClass: 'numbers'},
+    {type: 'action', value: '*', cssClass: 'symbols'},
 
-    {type: 'button', value: 1, class: 'numbers'},
-    {type: 'button', value: 2, class: 'numbers'},
-    {type: 'button', value: 3, class: 'numbers'},
-    {type: 'function', value: '-', class: 'symbols'},
+    {type: 'number', value: 1, cssClass: 'numbers'},
+    {type: 'number', value: 2, cssClass: 'numbers'},
+    {type: 'number', value: 3, cssClass: 'numbers'},
+    {type: 'action', value: '-', cssClass: 'symbols'},
 
 
-    {type: 'button', value: '.', class: 'symbols'},
-    {type: 'button', value: 0, class: 'numbers'},
-    {type: 'function', value: '+', class: 'symbols'},
-    {type: 'button', value: '=', class: 'symbols'}
+    {type: 'number', value: '.', cssClass: 'symbols'},
+    {type: 'number', value: 0, cssClass: 'numbers'},
+    {type: 'action', value: '+', cssClass: 'symbols'},
+    {type: 'action', value: '=', cssClass: 'symbols'}
 ];
 
 // $(document).ready(function () {
@@ -48,19 +48,75 @@ $('body').prepend("<div id='buttonField'>");
 
 let buttonField = $('#buttonField');
 
-$("<input>").appendTo(buttonField);
+$("<input disabled>").appendTo(buttonField);
+
+
 for (let key in buttons) {
 
     if (buttons.hasOwnProperty(key)) {
-        $("<button>" + buttons[key].value + "</button>").attr("class", buttons.class).attr("value", buttons.value).attr("type", buttons.type).appendTo(buttonField).click(function () {
-            handleClick(buttons[key]);
-        });
+        let $b = $("<button>" + buttons[key].value + "</button>");
+
+        $b.attr({
+            type: buttons[key].type,
+            value: buttons[key].value,
+            class: buttons[key].cssClass
+        }).appendTo(buttonField).click(handleClick);
+
+        // console.log(e);
     }
 
 }
 
+//if you want to GET type & value of buttons object
+//jei i pvz:val() funkc nieko neduosi tai grazins, bet jei idesi i vidu, tai jis pakeis reiksme, attr renkiesi, kad paimtu butent viena pavadinima, o ne visus
 
-function handleClick(data) {
-    alert(data.value);
+let a = '0';
+$('input').val(a); //in the start it always show 0
+
+function handleClick(e) {
+    // console.log(e.currentTarget, this.value, this.type, this.cssClass);
+    let $b = $(e.currentTarget);                //like THIS
+
+    if ($b.attr('type') === 'number') {
+
+        switch ($b.val()) {
+
+            case '.':
+
+                if (a.indexOf('.') === -1) {        // -1=nera; naudojamas ant stringo ieskom simbolio ir grazina skaiciu(pozicija kur yra simbolis)
+
+                    a += $b.val();      //
+                    $('input').val(a);              //val function for putting number into input field
+                }
+                break;
+
+            case '0':
+
+                if (a.length === 1 && a === '0') {
+
+                } else {
+                    a += $b.val();
+                    $('input').val(a);
+                }
+                break;
+
+
+            default :
+
+                if (a.length === 1 && a === '0') {
+                    a = $b.val();          //perraso pries tai buvusia a reiksme. buna 0 ir deda nauja
+                    $('input').val(a);
+                } else {
+                    a += $b.val();      //paima a buvusia rieksme ir prideda nauja $b.val() salia!
+                    $('input').val(a);
+                }
+
+
+        }
+
+
+    }
 }
+
+
 
