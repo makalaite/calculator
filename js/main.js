@@ -164,7 +164,7 @@ function handleClick(e) {
 
                 case '=':
 
-                    let a;
+                    let a = parseFloat('');
 
                     for (let i = 0; i < numbers.length; i++)
                     {
