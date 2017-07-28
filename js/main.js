@@ -48,15 +48,14 @@ $('body').prepend("<div id='buttonField'>");
 
 let buttonField = $('#buttonField');
 
-$("<input disabled>").appendTo(buttonField);
+$("<input disabled value='0'>").appendTo(buttonField);
 
 let ACTION_REPLACE = 'replaced',
     ACTION_INCREASE = 'increased',
     ACTION_REVERSE = 'reversed',
     ACTION_CLEAR = 'cleared',
-    ACTION_DELETE_ONE = 'delete_one';
-
-
+    ACTION_DELETE_ONE = 'delete_one',
+    ACTION_CALCULATE = 'sumOf';
 
 
 for (let key in buttons) {
@@ -78,8 +77,6 @@ for (let key in buttons) {
 //if you want to GET type & value of buttons object
 //jei i pvz:val() funkc nieko neduosi tai grazins, bet jei idesi i vidu, tai jis pakeis reiksme, attr renkiesi, kad paimtu butent viena pavadinima, o ne visus
 
-let a = '0';
-$('input').val(a); //in the start it always show 0
 
 function handleClick(e) {
     // console.log(e.currentTarget, this.value, this.type, this.cssClass);
@@ -87,7 +84,7 @@ function handleClick(e) {
 
     if ($b.attr('type') === 'number') {
         updateNumber(ACTION_INCREASE, $b.val());
-
+        updateInput();
     } else {
         if ($b.attr('type') === 'action') {
 
@@ -139,50 +136,110 @@ function handleClick(e) {
                 case '/':
                 case '%':
 
-                    action = $b.val();
 
-                    $('.disable').attr('disabled', true);
-                    updateNumber(ACTION_INCREASE, $b.val());
-                    // a += ' ' + action + ' ';
-                    // $('input').val(a);
+                    if(numbers[numbers.length - 1] !== '0')
+                    {
+                        actions.push($b.val());         //ideda kokie yra galimi actionai.
+                        numbers[actions.length] = '0';     //kai sukuri actiona tai actionas apibrezia,kad viena skaiciu uzbaigem rasyti ir bus naujas (rodo pradzioj 0, kol nieko nesuvedi)
+                    } else
+                    {
+                        actions.pop();
+                        actions.push($b.val());         //ideda kokie yra galimi actionai. turi eiti po logikos (pop istrina sena ir ideda nauja) jis istrina paskutini elementa pop, jei darai push is pradziu, naujas elementas pasidaro paskutinis, o pop isima paskutini.
+
+                    }
+
+
+
+
+
+                    console.log(numbers, actions);
+
+
+                // $('.disable').attr('disabled', true);
+                // updateNumber(ACTION_INCREASE, $b.val());
+                // // a += ' ' + action + ' ';
+                // // $('input').val(a);
+
+                    break;
+
+                case '=':
+
+                    let a;
+
+                    for (let i = 0; i < numbers.length; i++)
+                    {
+                        if (a)
+                        {
+                            let b = numbers[i];
+                            switch (actions[ i - 1 ])
+                            {
+                                case '+':
+
+                                    a += b;
+                                    break;
+
+                                case '-':
+
+                                    a -= b;
+                                    break;
+
+                                case '/':
+
+                                    a /= b;
+                                    break;
+
+                                case '*':
+
+                                    a *= b;
+                                    break;
+
+                                // case '%':
+                            }
+                        } else
+                        {
+                            a = numbers[0];
+                        }
+                    }
+
+                    console.log(a);
+
+                    $('input').val(a);
             }
         }
     }
 }
 
-let numbers = ['0', ''];
+let numbers = ['0'];
 let actions = [];
 
 function updateNumber(action, value) {
     // console.log(action, value);
     /*if(!action) {
-            a += value;
-    } else {
-        b += value;
-    }*/
-    
-    
+     a += value;
+     } else {
+     b += value;
+     }*/
+
 
     switch (action) {
         case ACTION_DELETE_ONE:
 
-        break;
+            break;
 
 
         case ACTION_CLEAR:
 
-        break;
+            break;
 
 
         case ACTION_REVERSE:
 
-        break;
+            break;
 
 
         case ACTION_INCREASE:
 
             let n = numbers[actions.length];        //istraukiamas skaicius is array tam kad nebesipliusuotu prie a kintamojo, po actiono naudojamas b kintamasis, po dar actiono c kintamasis..
-
 
             switch (value) {
 
@@ -190,8 +247,8 @@ function updateNumber(action, value) {
 
                     if (n.indexOf('.') === -1) {        // -1=nera; naudojamas ant stringo ieskom simbolio ir grazina skaiciu(pozicija kur yra simbolis)
 
-                        // a += $b.val();      //
-                        // $('input').val(a);              //val function for putting number into input field
+                        n += value;      //
+                        //$('input').val(a);              //val function for putting number into input field
                     }
                     break;
 
@@ -200,44 +257,56 @@ function updateNumber(action, value) {
                     if (n.length === 1 && a === '0') {
 
                     } else {
-                        updateNumber(ACTION_INCREASE, $b.val());
-                        // a += $b.val();
-                        // $('input').val(a);
+
+                        n += value;
+                        // $('input').val(n);
                     }
                     break;
 
 
                 default :
 
-                    if (n.length === 1 && a === '0') {
-
-                        updateNumber(ACTION_REPLACE, $b.val());
-                        // a = $b.val();          //perraso pries tai buvusia a reiksme. buna 0 ir deda nauja
-                        // $('input').val(a);
+                    if (n.length === 1 && n === '0') {
+                        n = value;          //perraso pries tai buvusia a reiksme. buna 0 ir deda nauja
+                        //  $('input').val(n);
                     } else {
 
-                        updateNumber(ACTION_INCREASE, $b.val());
-                        // a += $b.val();      //paima a buvusia rieksme ir prideda nauja $b.val() salia!
-                        // $('input').val(a);
+                        n += value;      //paima a buvusia rieksme ir prideda nauja $b.val() salia!
+                        //  $('input').val(n);
                     }
             }
 
-        numbers[actions.length] = n; //istrauktas sk idedamas atgal i array
-        break;
+            numbers[actions.length] = n; //istrauktas sk idedamas atgal i array
+            break;
 
 
         case ACTION_REPLACE:
 
-        break;
+            break;
 
-        default: console.log('unknown action');
+        default:
+            console.log('unknown action');
     }
 
 
 }
 function updateInput() {
-    
+    let actions_value = '';
+
+    for (let i = 0; i < numbers.length; i++) {
+        if (numbers[i] !== '0') {
+            actions_value += numbers[i];        // jeigu nera nulio, ji rodo, pasidarai kad nelygu nuliui,kad nerodytu kaskart pries vedant
+        }
+
+        if (actions[i]) {
+            actions_value += actions[i];        // += skirta, kad vis pridetu reiksme ir inpute rodytu skaiciu, veiksma ir vel skaiciu
+        }
+
+    }
+    $('input').val(actions_value);
+    // console.log(numbers, actions);
 }
+
 
 
 
